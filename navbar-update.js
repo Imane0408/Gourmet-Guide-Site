@@ -91,3 +91,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Exposer la fonction updateEmailBadge globalement pour pouvoir l'appeler depuis d'autres scripts
 window.updateEmailBadge = updateEmailBadge
+

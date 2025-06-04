@@ -287,7 +287,9 @@ function updateNavbarForAuth() {
 
   console.log("🔄 Navigation mise à jour pour:", loggedInUser?.role || "non connecté")
 }
-
+document.addEventListener("DOMContentLoaded", function() {
+    updateNavbarForAuth();  // Force la mise à jour au chargement
+});
 // --- Recipe Loading and Display ---
 function loadRecipes() {
   const recipeList = document.getElementById("recipe-list")
