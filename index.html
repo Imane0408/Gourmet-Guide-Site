@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - Accueil</title>
+
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+     <style>
+        /* Variables CSS pour la cohérence des couleurs */
+        :root {
+            --primary-color: #8D5B4C;
+            --secondary-color: #A67C70;
+            --accent-color: #E8A87C;
+            --dark-color: #2C3E50;
+            --light-color: #F8F9FA;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* Loader amélioré */
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Header modernisé */
+        .navbar {
+            transition: all 0.3s ease;
+            padding: 15px 0;
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(141, 91, 76, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero section spectaculaire */
+       .hero-section {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            z-index: 1;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+       .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .hero-content p {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-section .btn {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            transition: all 0.3s ease;
+            /* Styles explicites pour assurer la visibilité et la couleur verte */
+            background-color: #28a745; /* Vert succès de Bootstrap */
+            border-color: #28a745;
+            color: white;
+            position: relative; /* Assure qu'il est dans le contexte d'empilement */
+            z-index: 3; /* Le place au-dessus des autres éléments du contenu héroïque */
+        }
+
+        .hero-section .btn:hover {
+            background-color: #218838; /* Vert plus foncé au survol */
+            border-color: #1e7e34;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section features */
+        /* Styles pour la section "Pourquoi choisir" */
+.features-section {
+    background: linear-gradient(135deg, #f9f5f3 0%, #ffffff 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/pattern-light.png') repeat;
+    opacity: 0.03;
+    z-index: 0;
+}
+
+.features-section h2 {
+    position: relative;
+    margin-bottom: 60px;
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.features-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+.features-section .card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 30px rgba(141, 91, 76, 0.08);
+    height: 100%;
+    background: white;
+    position: relative;
+    z-index: 1;
+}
+
+.features-section .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(141, 91, 76, 0.15);
+}
+
+.features-section .card-body {
+    padding: 35px 25px;
+    text-align: center;
+}
+
+.features-section i {
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.features-section .card:hover i {
+    transform: scale(1.1);
+    color: var(--accent-color);
+}
+
+.features-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.features-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--accent-color);
+}
+
+.features-section p {
+    color: #666;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+        /* Styles pour la section "Recettes du jour" */
+.recipe-day-section {
+    padding: 80px 0;
+    background-color: white;
+    position: relative;
+}
+
+.recipe-day-section h2 {
+    position: relative;
+    margin-bottom: 60px;
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.recipe-day-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+.recipe-carousel-container {
+    position: relative;
+    padding: 0 60px;
+}
+
+.recipe-carousel-inner {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.recipe-carousel-item {
+    flex: 0 0 calc((100% - 80px) / 3);
+    margin-right: 40px;
+    transition: all 0.3s ease;
+}
+
+.recipe-carousel-item:last-child {
+    margin-right: 0;
+}
+
+.recipe-carousel .card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    height: 100%;
+}
+
+.recipe-carousel .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(141, 91, 76, 0.15);
+}
+
+.recipe-carousel .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.recipe-carousel .card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.recipe-carousel .card-body {
+    padding: 25px;
+    text-align: center;
+}
+
+.recipe-carousel .card-title {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.recipe-carousel .card-text {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.recipe-carousel .btn {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.recipe-carousel .btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.carousel-control-prev, 
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover, 
+.carousel-control-next:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
+}
+
+        .features-section i {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Styles spécifiques pour le carrousel de recettes (Personnalisé) */
+        .carousel-outer-wrapper {
+            position: relative; /* Contexte pour le positionnement absolu des flèches */
+            display: flex;
+            align-items: center; /* Centre verticalement les éléments, y compris les flèches */
+            padding: 0 60px; /* Espace plus grand pour les flèches sur les côtés */
+        }
+
+        .recipe-carousel-container {
+            width: 100%;
+            overflow: hidden; /* Cache les cartes qui sortent de la vue */
+            flex-grow: 1; /* Permet de prendre l'espace disponible */
+        }
+
+        .recipe-carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out; /* Animation de défilement fluide */
+            /* Removed gap here to use margin-right on items for precise calculation */
+            justify-content: flex-start; /* Aligne les éléments au début */
+            align-items: stretch; /* Assure que les cartes ont la même hauteur */
+        }
+
+        .recipe-carousel-item {
+            /* Fixe la largeur pour afficher 3 cartes avec des marges entre elles */
+            flex: 0 0 calc((100% - (2 * 40px)) / 3); /* 2 * 40px for 2 gaps between 3 items */
+            max-width: calc((100% - (2 * 40px)) / 3);
+            box-sizing: border-box; /* Inclut padding et border dans la largeur */
+            margin-right: 40px; /* Explicit margin for spacing between items */
+        }
+
+        .recipe-carousel .card {
+            border: none;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+            transition: transform 0.3s ease-in-out;
+            cursor: grab;
+            height: 100%; /* Assure la pleine hauteur */
+            min-height: 480px; /* Augmente la hauteur minimale pour plus d'espace et uniformité */
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px; /* Arrondi plus prononcé */
+            overflow: hidden; /* Assure que l'arrondi s'applique à l'image */
+        }
+
+        .recipe-carousel .card:active {
+            cursor: grabbing;
+        }
+
+        .recipe-carousel .card:hover {
+            transform: translateY(-10px); /* Effet de survol plus prononcé */
+        }
+
+        .recipe-carousel .card-img-top {
+            height: 240px; /* Légèrement plus grande pour mieux voir l'image */
+            object-fit: cover;
+            border-top-left-radius: 20px; /* Arrondi correspondant à la carte */
+            border-top-right-radius: 20px; /* Arrondi correspondant à la carte */
+        }
+
+        .recipe-carousel .card-body {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribue l'espace verticalement */
+            padding: 25px; /* Augmente le padding interne */
+        }
+
+        .recipe-carousel .card-title {
+            margin-bottom: 18px; /* Plus d'espace sous le titre */
+            font-size: 1.4rem; /* Taille de police légèrement plus grande */
+            font-weight: 600;
+        }
+
+        .recipe-carousel .card-text {
+            margin-bottom: 10px; /* Espacement entre les lignes de texte */
+            line-height: 1.4; /* Améliore la lisibilité */
+        }
+
+        .recipe-carousel .d-flex.align-items-center.justify-content-center {
+            margin-top: 15px; /* Espace au-dessus des étoiles */
+            margin-bottom: 20px; /* Espace sous les étoiles */
+        }
+
+        .recipe-carousel .btn {
+            margin-top: auto; /* Pousse le bouton vers le bas */
+            padding: 12px 25px; /* Plus de padding pour le bouton */
+            border-radius: 10px; /* Arrondi du bouton */
+            font-size: 1.05rem; /* Taille de police du bouton */
+            font-weight: 500;
+        }
+
+        /* Contrôles du carrousel */
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(141, 91, 76, 0.9); /* Couleur de fond des flèches plus opaque */
+            border-radius: 50%;
+            width: 55px; /* Taille plus grande */
+            height: 55px; /* Taille plus grande */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            z-index: 10;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background-color: #8D5B4C;
+            transform: translateY(-50%) scale(1.15); /* Léger agrandissement au survol */
+        }
+
+        .carousel-control-prev {
+            left: 0; /* Position par rapport au carousel-outer-wrapper */
+        }
+
+        .carousel-control-next {
+            right: 0; /* Position par rapport au carousel-outer-wrapper */
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            font-size: 1.8rem; /* Icône plus grande */
+            color: white;
+        }
+
+
+        /* Carrousel de témoignages premium */
+        .testimonials-carousel {
+            position: relative;
+            padding: 50px 0;
+        }
+
+        .testimonials-carousel .carousel-item {
+            padding: 20px;
+        }
+
+        .testimonials-carousel .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .testimonials-carousel .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 100px;
+            font-family: Georgia, serif;
+            color: rgba(141, 91, 76, 0.1);
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .testimonials-carousel .testimonial-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .testimonials-carousel .carousel-item:hover .testimonial-img {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(141, 91, 76, 0.2);
+        }
+
+        .testimonials-carousel .testimonial-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonials-carousel .testimonial-card .fw-bold {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .testimonials-carousel .carousel-control-prev,
+        .testimonials-carousel .carousel-control-next {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .testimonials-carousel .carousel-control-prev {
+            left: -25px;
+        }
+
+        .testimonials-carousel .carousel-control-next {
+            right: -25px;
+        }
+
+        .testimonials-carousel .carousel-control-prev:hover,
+        .testimonials-carousel .carousel-control-next:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Section stats */
+        .stats-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/pattern.png') repeat;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(141, 91, 76, 0.1);
+        }
+
+        .stat-card i {
+            transition: all 0.5s ease;
+        }
+
+        .stat-card:hover i {
+            transform: scale(1.2);
+        }
+
+        /* CTA section */
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/dot-pattern.png') repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-section .btn {
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section .btn-outline-light {
+            border: 2px solid white;
+        }
+
+        .cta-section .btn-outline-light:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .cta-section .btn-primary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid white;
+        }
+
+        .cta-section .btn-primary:hover {
+            background-color: transparent;
+            color: white;
+        }
+
+        /* Footer amélioré */
+        .footer {
+            background-color: var(--dark-color);
+            padding: 60px 0 20px;
+        }
+
+        .footer h5 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer p,
+        .footer .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .footer .nav-link:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer .nav-link i {
+            margin-right: 8px;
+        }
+
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.1);
+            margin: 30px 0;
+        }
+
+        /* Animations personnalisées */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 100%, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-section h1 {
+                font-size: 3rem;
+            }
+
+            .hero-section p {
+                font-size: 1.2rem;
+            }
+
+            .recipe-carousel-item {
+                flex: 0 0 calc((100% - (1 * 40px)) / 2); /* 2 cartes par vue avec gap de 40px */
+                max-width: calc((100% - (1 * 40px)) / 2);
+            }
+
+            .testimonials-carousel .testimonial-card {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                height: auto;
+                padding: 120px 0;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 40px;
+                height: 40px;
+            }
+
+            .carousel-control-prev {
+                left: -10px;
+            }
+
+            .carousel-control-next {
+                right: -10px;
+            }
+
+            .testimonials-carousel .carousel-item {
+                padding: 10px;
+            }
+
+            .testimonials-carousel .testimonial-card {
+                padding: 20px;
+            }
+
+            .testimonials-carousel .testimonial-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .recipe-carousel-item {
+                flex: 0 0 100%; /* 1 carte par vue */
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .stats-section .display-4 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader" class="loader-container">
+        <div class="loader">
+            <div class="loader-logo">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Chargement...</span>
+            </div>
+        </div>
+    </div>
+
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">À propos</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html">Favoris</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    
+                    <li class="nav-item" id="inbox-nav-item">
+                        <a class="nav-link" href="inbox.html">
+                            Messages
+                            <span id="email-badge" class="badge bg-danger ms-1" style="display: none;"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light me-2" id="logout-button"
+                        style="display: none;">Déconnexion</button>
+                    <button id="toggle-theme" class="btn btn-outline-light me-2">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section text-white">
+    <video autoplay muted loop class="hero-video">
+        <source src="Images/istockphoto-2180056617-640_adpp_is.mp4" type="video/mp4">
+    </video>
+    <div class="hero-content text-center container">
+        <h1 class="display-3 fw-bold mb-4">L'Art Culinaire à Votre Portée</h1>
+        <p class="lead mb-5" style="font-size: 1.5rem; max-width: 800px; margin: 0 auto;">
+            Découvrez des recettes exceptionnelles, partagez vos créations<br>et inspirez-vous des meilleurs chefs
+        </p>
+        <a href="recipes.html" class="btn btn-success btn-lg px-4 py-3">Explorer les Recettes</a>
+        
+    </div>
+</section>
+
+    <section class="container py-5 my-5">
+    <h2 class="text-center mb-5 display-4 fw-bold" style="color: #8D5B4C;">
+        <i class="fas fa-star me-2"></i>Pourquoi choisir Gourmet Guide ?
+    </h2>
+    <div class="row g-4 d-flex align-items-stretch">
+        <div class="col-md-4 d-flex">
+            <div class="card w-100">
+                <div class="card-body text-center d-flex flex-column">
+                    <i class="fas fa-book fa-3x mb-3" style="color: #8D5B4C;"></i>
+                    <h3 class="mb-3">Recettes Authentiques</h3>
+                    <p class="mb-0 flex-grow-1">Des plats testés et approuvés par nos chefs, avec des instructions claires pour des résultats parfaits à chaque fois.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 d-flex">
+            <div class="card w-100">
+                <div class="card-body text-center d-flex flex-column">
+                    <i class="fas fa-heart fa-3x mb-3" style="color: #8D5B4C;"></i>
+                    <h3 class="mb-3">Favoris Personnels</h3>
+                    <p class="mb-0 flex-grow-1">Créez votre propre livre de recettes en sauvegardant vos préférées pour y accéder facilement à tout moment.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 d-flex">
+            <div class="card w-100">
+                <div class="card-body text-center d-flex flex-column">
+                    <i class="fas fa-lightbulb fa-3x mb-3" style="color: #8D5B4C;"></i>
+                    <h3 class="mb-3">Inspiration Quotidienne</h3>
+                    <p class="mb-0 flex-grow-1">Découvrez de nouvelles idées de menus chaque jour pour varier les plaisirs et surprendre vos convives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="container my-5">
+        <h2 class="text-center mb-4" style="color: #8D5B4C;"><i class="fas fa-utensils me-2"></i>Recettes du Jour</h2>
+        <div class="carousel-outer-wrapper">
+            <div class="recipe-carousel-container">
+                <div class="recipe-carousel-inner" id="recipe-carousel-inner">
+                    </div>
+            </div>
+            <a class="carousel-control-prev" href="#" role="button" id="prevRecipe">
+                <span class="fas fa-chevron-left carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Précédent</span>
+            </a>
+            <a class="carousel-control-next" href="#" role="button" id="nextRecipe">
+                <span class="fas fa-chevron-right carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Suivant</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="container-fluid py-5 testimonials-carousel" style="background-color: var(--light-color);">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4 fw-bold" style="color: var(--primary-color);">
+                <i class="fas fa-comments me-2"></i>Ils Nous Ont Fait Confiance
+            </h2>
+            <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="testimonial-card">
+                            <img src="Images/image1.jpg" class="testimonial-img" alt="Client 1">
+                            <p class="lead">"Gourmet Guide a révolutionné notre façon de gérer les recettes. L'interface
+                                est intuitive, les fonctionnalités sont complètes et c'est un gain de temps considérable
+                                pour notre équipe!"</p>
+                            <p class="fw-bold">- Sophie L., Gérante de restaurant</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="Images/image2.jpg" class="testimonial-img" alt="Client 2">
+                            <p class="lead">"La fonctionnalité des favoris est géniale! Je peux organiser mes recettes
+                                préférées en un clin d'œil. Une application indispensable pour tout professionnel de la
+                                cuisine."</p>
+                            <p class="fw-bold">- Marc D., Chef étoilé</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="testimonial-card">
+                            <img src="Images/image3.jpg" class="testimonial-img" alt="Client 3">
+                            <p class="lead">"L'interface est magnifique et la recherche de recettes est incroyablement
+                                efficace. Les animations donnent une expérience utilisateur exceptionnelle. Bravo!"</p>
+                            <p class="fw-bold">- Fatima Z., Critique culinaire</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Précédent</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Suivant</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section py-5">
+        <div class="container text-center">
+            <h2 class="mb-5 display-4 fw-bold" style="color: var(--primary-color);">Nos Chiffres Clés</h2>
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card p-3">
+                        <i class="fas fa-star mb-3"></i>
+                        <h3 class="display-4 fw-bold">4.9</h3>
+                        <p class="lead text-muted">Étoiles moyennes</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card p-3">
+                        <i class="fas fa-users mb-3"></i>
+                        <h3 class="display-4 fw-bold">1500+</h3>
+                        <p class="lead text-muted">Clients satisfaits</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card p-3">
+                        <i class="fas fa-concierge-bell mb-3"></i>
+                        <h3 class="display-4 fw-bold">500+</h3>
+                        <p class="lead text-muted">Recettes partagées</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card p-3">
+                        <i class="fas fa-book-open mb-3"></i>
+                        <h3 class="display-4 fw-bold">120+</h3>
+                        <p class="lead text-muted">Recettes uniques</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section text-white text-center">
+        <div class="container">
+            <h2 class="display-4 fw-bold mb-4">Prêt à Révolutionner Votre Cuisine ?</h2>
+            <p class="lead mb-5">Rejoignez notre communauté de passionnés et accédez à des milliers de recettes
+                exclusives.</p>
+            <a href="registre.html" class="btn btn-outline-light btn-lg me-3">S'inscrire Maintenant</a>
+            <a href="contact.html" class="btn btn-primary btn-lg">Nous Contacter</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5><i class="fas fa-utensils me-2"></i> Gourmet Guide</h5>
+                    <p>La référence pour les passionnés de cuisine et les professionnels. Découvrez, partagez et
+                        conservez vos recettes préférées.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5>Navigation</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="index.html" class="nav-link p-0">Accueil</a></li>
+                        <li class="nav-item"><a href="about.html" class="nav-link p-0">À propos</a></li>
+                        <li class="nav-item"><a href="recipes.html" class="nav-link p-0">Recettes</a></li>
+                        <li class="nav-item"><a href="favorites.html" class="nav-link p-0">Favoris</a></li>
+                        <li class="nav-item" id="add-recipe-footer-link" style="display: none;"><a href="add.html"
+                                class="nav-link p-0">Ajouter une recette</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5>Légal</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#" class="nav-link p-0">Mentions légales</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link p-0">Politique de confidentialité</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link p-0">Conditions d'utilisation</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link p-0">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5>Contact</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#" class="nav-link p-0"><i class="fas fa-map-marker-alt me-2"></i>
+                                123 Rue Gourmande, Paris</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link p-0"><i class="fas fa-phone me-2"></i> +33 1 23
+                                45 67 89</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link p-0"><i class="fas fa-envelope me-2"></i>
+                                contact@gourmetguide.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Gourmet Guide. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gestion du loader
+            setTimeout(function () {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(function () {
+                        loader.style.display = 'none';
+                    }, 500);
+                }
+            }, 1000);
+
+            // Gestion de la navbar au scroll
+            window.addEventListener('scroll', function () {
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }
+            });
+
+            // Vérification de l'état de connexion
+            function checkLoginStatus() {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                const loginLink = document.getElementById('login-link');
+                const registerLink = document.getElementById('register-link');
+                const logoutButton = document.getElementById('logout-button');
+                const addRecipeFooterLink = document.getElementById('add-recipe-footer-link');
+                const inboxNavItem = document.getElementById('inbox-nav-item');
+
+                if (isLoggedIn) {
+                    if (loginLink) loginLink.style.display = 'none';
+                    if (registerLink) registerLink.style.display = 'none';
+                    if (logoutButton) logoutButton.style.display = 'block';
+                    if (addRecipeFooterLink) addRecipeFooterLink.style.display = 'block';
+                    if (inboxNavItem) inboxNavItem.style.display = 'block';
+                } else {
+                    if (loginLink) loginLink.style.display = 'block';
+                    if (registerLink) registerLink.style.display = 'block';
+                    if (logoutButton) logoutButton.style.display = 'none';
+                    if (addRecipeFooterLink) addRecipeFooterLink.style.display = 'none';
+                    if (inboxNavItem) inboxNavItem.style.display = 'none';
+                }
+
+                // Mettre à jour le badge des emails
+                updateEmailBadge();
+            }
+
+            // Gestion de la déconnexion
+            const logoutButton = document.getElementById('logout-button');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function () {
+                    localStorage.setItem('isLoggedIn', 'false');
+                    checkLoginStatus();
+                    window.location.href = 'index1.html';
+                });
+            }
+
+            // Mise à jour du badge des emails
+            function updateEmailBadge() {
+                const emailBadge = document.getElementById('email-badge');
+                if (emailBadge) {
+                    const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                    const unreadCount = messages.filter(msg => !msg.read).length;
+
+                    if (unreadCount > 0) {
+                        emailBadge.textContent = unreadCount;
+                        emailBadge.style.display = 'inline-block';
+                    } else {
+                        emailBadge.style.display = 'none';
+                    }
+                }
+            }
+
+            // Gestion du thème sombre/clair
+            const toggleThemeButton = document.getElementById('toggle-theme');
+            if (toggleThemeButton) {
+                toggleThemeButton.addEventListener('click', function () {
+                    document.body.classList.toggle('dark-theme');
+                    const icon = this.querySelector('i');
+                    if (document.body.classList.contains('dark-theme')) {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+
+                // Vérifier le thème au chargement
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    const icon = toggleThemeButton.querySelector('i');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+
+            // --- Début du code JavaScript pour le carrousel personnalisé ---
+            let allRecipes = []; // Stocke toutes les recettes
+            let currentTransformX = 0; // Valeur actuelle de translateX pour le carrousel interne
+            let itemWidth = 0; // Largeur d'une seule carte de recette, y compris l'espace
+            let autoScrollInterval; // Variable pour l'intervalle de défilement automatique
+
+            const recipeCarouselInner = document.getElementById('recipe-carousel-inner');
+            const prevButton = document.getElementById('prevRecipe');
+            const nextButton = document.getElementById('nextRecipe');
+
+            if (!recipeCarouselInner || !prevButton || !nextButton) {
+                console.error("Un ou plusieurs éléments du carrousel de recettes sont introuvables. Vérifiez les IDs.");
+                // Ne pas retourner ici pour permettre au reste du script de s'exécuter
+            }
+
+            // Fonction pour calculer la largeur d'un seul élément
+            function calculateItemWidth() {
+                const firstItem = recipeCarouselInner.querySelector('.recipe-carousel-item');
+                if (firstItem) {
+                    const itemStyle = getComputedStyle(firstItem);
+                    // itemWidth = largeur de l'élément + sa propre marge droite
+                    itemWidth = firstItem.offsetWidth + parseFloat(itemStyle.marginRight);
+                }
+            }
+
+            // Fonction pour peupler le carrousel avec TOUTES les recettes
+            function populateCarousel() {
+                allRecipes = JSON.parse(localStorage.getItem('recipes')) || [];
+
+                if (allRecipes.length === 0) {
+                    recipeCarouselInner.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <h4>Aucune recette disponible pour le moment.</h4>
+                            <a href="add.html" class="btn btn-primary mt-3">Ajouter une recette</a>
+                        </div>
+                    `;
+                    if (prevButton) prevButton.style.display = 'none';
+                    if (nextButton) nextButton.style.display = 'none';
+                    return;
+                }
+
+                let cardsHtml = '';
+                // Cloner les éléments pour un défilement infini
+                // Nous avons besoin de suffisamment de clones au début et à la fin pour que le défilement soit fluide
+                // sans montrer de "saut" lorsque nous réinitialisons la position.
+                // Cloner 3 éléments du début pour les placer à la fin
+                const numOriginalItems = allRecipes.length;
+                const clonesNeeded = 3; // Nombre de clones à ajouter au début et à la fin
+
+                // Ajout des clones de fin au début (pour le défilement vers l'arrière)
+                for (let i = numOriginalItems - clonesNeeded; i < numOriginalItems; i++) {
+                    const recipe = allRecipes[i];
+                    if (recipe) cardsHtml += createRecipeCardHtml(recipe);
+                }
+
+                // Ajout des recettes originales
+                allRecipes.forEach(recipe => {
+                    cardsHtml += createRecipeCardHtml(recipe);
+                });
+
+                // Ajout des clones de début à la fin (pour le défilement vers l'avant)
+                for (let i = 0; i < clonesNeeded; i++) {
+                    const recipe = allRecipes[i];
+                    if (recipe) cardsHtml += createRecipeCardHtml(recipe);
+                }
+
+                recipeCarouselInner.innerHTML = cardsHtml;
+
+                // Après avoir peuplé, calculer la largeur de l'élément
+                calculateItemWidth();
+
+                // Ajuster la transformation initiale pour afficher le premier ensemble d'éléments originaux
+                currentTransformX = -clonesNeeded * itemWidth;
+                recipeCarouselInner.style.transition = 'none'; // Désactiver la transition pour le saut initial
+                recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+                void recipeCarouselInner.offsetWidth; // Force reflow
+                recipeCarouselInner.style.transition = 'transform 0.5s ease-in-out'; // Réactiver la transition
+            }
+
+            // Helper function to create recipe card HTML
+            function createRecipeCardHtml(recipe) {
+                const ratings = Object.values(recipe.ratings || {});
+                const averageRating = ratings.length > 0 ?
+                    (ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length).toFixed(1) : 0;
+                const averageRatingDisplay = ratings.length > 0 ? averageRating : "N/A";
+                const starIcons = Array(5).fill(0).map((_, k) => `
+                    <i class="fas fa-star ${k < Math.round(averageRating) ? "text-warning" : "text-muted"}"></i>
+                `).join('');
+
+                return `
+                    <div class="recipe-carousel-item">
+                        <div class="card h-100">
+                            <img src="${recipe.image || 'images/default-recipe.jpg'}" class="card-img-top" alt="${recipe.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.name}</h5>
+                                <p class="card-text mb-1"><small><strong>Temps:</strong> ${recipe.time || 'N/A'} min</small></p>
+                                <p class="card-text mb-1"><small><strong>Difficulté:</strong> ${recipe.difficulty || 'N/A'}</small></p>
+                                <div class="d-flex align-items-center justify-content-center mb-2">
+                                    ${starIcons}
+                                    <span class="ms-2 text-muted">(${averageRatingDisplay})</span>
+                                </div>
+                                <a href="recipes.html#recipe-${recipe.id}" class="btn btn-outline-primary btn-sm mt-auto">Voir la recette</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Fonction pour faire défiler le carrousel vers l'élément suivant
+            function nextRecipe() {
+                if (allRecipes.length === 0) return;
+
+                const originalItemsCount = allRecipes.length;
+                const clonesNeeded = 3;
+
+                currentTransformX -= itemWidth;
+                recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+
+                // Lorsque la transition se termine, réinitialiser la position si nous avons dépassé les éléments originaux
+                let transitionEndFired = false;
+                const handleTransitionEnd = () => {
+                    if (transitionEndFired) return;
+                    transitionEndFired = true;
+
+                    recipeCarouselInner.removeEventListener('transitionend', handleTransitionEnd);
+
+                    // Si nous avons défilé au-delà du dernier élément original (après les clones de début)
+                    if (Math.abs(currentTransformX) >= (originalItemsCount + clonesNeeded) * itemWidth) {
+                        currentTransformX = -clonesNeeded * itemWidth; // Réinitialiser au début des éléments originaux
+                        recipeCarouselInner.style.transition = 'none'; // Désactiver la transition pour un saut instantané
+                        recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+                        void recipeCarouselInner.offsetWidth; // Forcer le reflow
+                        recipeCarouselInner.style.transition = 'transform 0.5s ease-in-out'; // Réactiver la transition
+                    }
+                };
+                recipeCarouselInner.addEventListener('transitionend', handleTransitionEnd);
+            }
+
+            // Fonction pour faire défiler le carrousel vers l'élément précédent
+            function prevRecipe() {
+                if (allRecipes.length === 0) return;
+
+                const originalItemsCount = allRecipes.length;
+                const clonesNeeded = 3;
+
+                // Si nous sommes au début des éléments originaux (ou des clones de début), sauter à la fin des éléments clonés
+                if (currentTransformX >= 0) { // If we are at or past the first cloned item (index 0)
+                    currentTransformX = -(originalItemsCount + clonesNeeded) * itemWidth;
+                    recipeCarouselInner.style.transition = 'none'; // Disable transition for an instant jump
+                    recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+                    void recipeCarouselInner.offsetWidth; // Force reflow
+                }
+
+                currentTransformX += itemWidth;
+                recipeCarouselInner.style.transition = 'transform 0.5s ease-in-out'; // Re-enable transition
+                recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+            }
+
+            // Démarrer le défilement automatique
+            function startAutoScroll() {
+                stopAutoScroll(); // S'assurer qu'il n'y a qu'un seul intervalle actif
+                autoScrollInterval = setInterval(nextRecipe, 3000); // Toutes les 3 secondes
+            }
+
+            // Arrêter le défilement automatique
+            function stopAutoScroll() {
+                if (autoScrollInterval) {
+                    clearInterval(autoScrollInterval);
+                }
+            }
+
+            // Gestionnaires d'événements pour les boutons de navigation
+            if (prevButton) {
+                prevButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    stopAutoScroll(); // Stop auto-scroll on manual interaction
+                    prevRecipe();
+                    startAutoScroll(); // Restart after a delay
+                });
+            }
+
+            if (nextButton) {
+                nextButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    stopAutoScroll(); // Stop auto-scroll on manual interaction
+                    nextRecipe();
+                    startAutoScroll(); // Restart after a delay
+                });
+            }
+
+            // Initialisation et configuration
+            populateCarousel();
+            startAutoScroll();
+
+            // Recalculate item width on window resize
+            window.addEventListener('resize', () => {
+                calculateItemWidth();
+                // Adjust current position to match new item width
+                // This helps maintain visual consistency after resizing
+                // Recalculer l'index visible basé sur la nouvelle largeur d'élément
+                const clonesNeeded = 3;
+                const currentVisibleIndex = Math.round(Math.abs(currentTransformX + clonesNeeded * itemWidth) / itemWidth);
+                currentTransformX = -(currentVisibleIndex + clonesNeeded) * itemWidth;
+                recipeCarouselInner.style.transition = 'none';
+                recipeCarouselInner.style.transform = `translateX(${currentTransformX}px)`;
+                void recipeCarouselInner.offsetWidth;
+                recipeCarouselInner.style.transition = 'transform 0.5s ease-in-out';
+            });
+
+            // --- Fin du code JavaScript pour le carrousel personnalisé ---
+
+            // Initialisation des animations GSAP (existantes)
+            function initAnimations() {
+                gsap.from(".hero-content h1", { duration: 1, y: -50, opacity: 0, ease: "power3.out" });
+                gsap.from(".hero-content p", { duration: 1, y: 50, opacity: 0, delay: 0.3, ease: "power3.out" });
+                gsap.from(".hero-content a", { duration: 1, y: 50, opacity: 0, delay: 0.6, ease: "power3.out" });
+
+                gsap.from(".features-section .card", {
+                    duration: 1, y: 100, opacity: 0, stagger: 0.2,
+                    scrollTrigger: { trigger: ".features-section", start: "top 80%", toggleActions: "play none none none" }
+                });
+
+                gsap.from(".testimonial-card", {
+                    duration: 1, scale: 0.9, opacity: 0, stagger: 0.2,
+                    scrollTrigger: { trigger: ".testimonials-carousel", start: "top 80%", toggleActions: "play none none none" }
+                });
+            }
+
+            // Appels d'initialisation
+            checkLoginStatus();
+            initAnimations();
+        });
+    </script>
+
+
+
+
+
+<script src="unified-notification-system.js"></script>
+<script src="improved-navbar-update.js"></script>
+
+
+<script src="utils.js"></script>
+<script src="app.js"></script>
+<script src="email-notification.js"></script>
+<script src="navbar-update.js"></script>
+   
+</body>
+
+</html>

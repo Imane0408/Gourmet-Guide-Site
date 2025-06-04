@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - Mes Favoris</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Styles pour les cartes de recettes favorites */
+        #favorites-list .card,
+        #listRecipesModalBody .card {
+            border: none;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée */
+            transition: transform 0.3s ease-in-out;
+            border-radius: 15px; /* Arrondi des cartes */
+            overflow: hidden; /* Assure que l'image est aussi arrondie */
+            height: 100%; /* Assure que toutes les cartes ont la même hauteur */
+            min-height: 450px; /* Hauteur minimale pour l'uniformité */
+            display: flex;
+            flex-direction: column;
+        }
+
+        #favorites-list .card:hover,
+        #listRecipesModalBody .card:hover {
+            transform: translateY(-8px); /* Effet de survol */
+        }
+
+        #favorites-list .card-img-top,
+        #listRecipesModalBody .card-img-top {
+            height: 220px; /* Hauteur fixe pour les images */
+            object-fit: cover; /* Recadre l'image pour couvrir l'espace */
+            border-top-left-radius: 15px; /* Arrondi correspondant à la carte */
+            border-top-right-radius: 15px; /* Arrondi correspondant à la carte */
+        }
+
+        #favorites-list .card-body,
+        #listRecipesModalBody .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pousse le bouton vers le bas */
+            flex-grow: 1; /* Permet au corps de la carte de prendre l'espace disponible */
+            padding: 20px; /* Padding interne */
+            text-align: center; /* Centre le texte */
+        }
+
+        #favorites-list .card-title,
+        #listRecipesModalBody .card-title {
+            font-size: 1.3rem; /* Taille de police du titre */
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        #favorites-list .card-text,
+        #listRecipesModalBody .card-text {
+            margin-bottom: 8px; /* Espacement entre les lignes de texte */
+            line-height: 1.4;
+        }
+
+        #favorites-list .d-flex.align-items-center,
+        #listRecipesModalBody .d-flex.align-items-center {
+            justify-content: center; /* Centre les étoiles */
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        #favorites-list .btn,
+        #listRecipesModalBody .btn {
+            margin-top: auto; /* Pousse le bouton vers le bas */
+            padding: 10px 20px; /* Padding du bouton */
+            border-radius: 8px; /* Arrondi du bouton */
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Styles pour les onglets */
+        .nav-tabs .nav-link {
+            color: #8D5B4C;
+            border-color: #dee2e6 #dee2e6 #fff;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem 0.5rem 0 0;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #fff;
+            background-color: #8D5B4C;
+            border-color: #8D5B4C #8D5B4C #8D5B4C;
+        }
+
+        .nav-tabs .nav-link:hover:not(.active) {
+            background-color: #e9ecef;
+            border-color: #e9ecef #e9ecef #fff;
+        }
+
+        .tab-content {
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Style pour le message "Aucune recette favorite" */
+        .alert-info {
+            background-color: #e0f7fa;
+            border-color: #b2ebf2;
+            color: #00796b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-info .fas {
+            color: #00bcd4;
+        }
+
+        /* Styles pour les modals */
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background-color: #8D5B4C;
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding: 1.5rem;
+        }
+
+        .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%); /* Rend l'icône blanche */
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #8D5B4C;">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="favorites.html">Favoris</a>
+                    </li>
+                    <li class="nav-item" id="notifications-nav-item" style="display: none;">
+                        <a class="nav-link" href="inbox.html">
+                            Messages
+                            <span id="notification-count" class="badge bg-danger ms-1" style="display: none;"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="profile-link" style="display: none;">
+                        <a class="nav-link" href="profile.html">Profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light" id="logout-button" style="display: none;">Déconnexion</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container mt-5 pt-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-heart text-danger me-2"></i>Mes Favoris</h1>
+                <button class="btn btn-primary" id="createNewListBtn">
+                    <i class="fas fa-plus"></i> Nouvelle Liste
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4" id="favoriteTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="classic-favorites-tab" data-bs-toggle="tab"
+                        data-bs-target="#classic-favorites" type="button" role="tab">
+                        <i class="fas fa-bookmark"></i> Favoris Classiques
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="custom-lists-tab" data-bs-toggle="tab" data-bs-target="#custom-lists"
+                        type="button" role="tab">
+                        <i class="fas fa-list"></i> Listes Personnalisées
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="favoriteTabContent">
+                <div class="tab-pane fade show active" id="classic-favorites" role="tabpanel">
+                    <div class="row" id="favorites-list">
+                        </div>
+                </div>
+
+                <div class="tab-pane fade" id="custom-lists" role="tabpanel">
+                    <div class="row" id="favorite-lists-container">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="createListModal" tabindex="-1" aria-labelledby="createListModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createListModalLabel">Créer une Nouvelle Liste</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createListForm">
+                        <div class="mb-3">
+                            <label for="listName" class="form-label">Nom de la liste *</label>
+                            <input type="text" class="form-control" id="listName" required
+                                placeholder="ex: Recettes du week-end, À tester, Pour l'été...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="listDescription" class="form-label">Description (optionnel)</label>
+                            <textarea class="form-control" id="listDescription" rows="3"
+                                placeholder="Décrivez le thème ou l'objectif de cette liste..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Créer la Liste
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="listRecipesModal" tabindex="-1" aria-labelledby="listRecipesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listRecipesModalLabel">Recettes de la Liste</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="listRecipesModalBody">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-white py-4 mt-5" style="background-color: #8D5B4C;">
+        <div class="container text-center">
+            <p>© 2023 Gourmet Guide. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="notifications.js"></script>
+    <script src="favorites-manager.js"></script>
+    <script src="recipes-enhanced.js"></script>
+    <script src="app.js"></script>
+
+
+</body>
+
+</html>

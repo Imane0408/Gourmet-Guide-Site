@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - À propos</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #8D5B4C;
+            --secondary-color: #A67C70;
+            --accent-color: #E8A87C;
+            --dark-color: #2C3E50;
+            --light-color: #F8F9FA;
+            --bg-light: #FFF9F5;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* Header modernisé */
+        .navbar {
+            transition: all 0.3s ease;
+            padding: 15px 0;
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(141, 91, 76, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Hero section about */
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('images/restaurant-interior1.jpg') center/cover no-repeat;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 56px;
+        }
+
+        /* Sections stylisées */
+        .about-section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .about-section:nth-child(even) {
+            background-color: white;
+        }
+
+        .about-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s ease;
+            height: 100%;
+            background: white;
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(141, 91, 76, 0.15);
+        }
+
+        .about-card img {
+            transition: transform 0.5s ease;
+        }
+
+        .about-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Équipe */
+        .team-member {
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover .team-img {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(141, 91, 76, 0.2);
+        }
+
+        /* Carte */
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: 600px; /* Augmenté la hauteur pour que la carte apparaisse plus grande */
+            transition: all 0.3s ease;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .map-container:hover {
+            box-shadow: 0 15px 40px rgba(141, 91, 76, 0.2);
+        }
+
+        /* Engagement */
+        .commitment-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .commitment-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/pattern.png') repeat;
+            opacity: 0.1;
+        }
+
+        /* Icônes */
+        .section-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .commitment-section .section-icon {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-hero {
+                height: 50vh;
+            }
+            
+            .team-img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .map-container {
+                height: 400px; /* Ajustement pour les écrans plus petits */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html">Favoris</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    <li class="nav-item" id="profile-link" style="display: none;">
+                        <a class="nav-link" href="profile.html">Profil</a>
+                    </li>
+                    <li class="nav-item" id="admin-dashboard-link" style="display: none;">
+                        <a class="nav-link" href="admin_dashboard.html">Admin Dashboard</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light" id="logout-button" style="display: none;">Déconnexion</button>
+                    <button class="btn btn-outline-light ms-2" id="toggle-theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Notre Histoire</h1>
+            <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Découvrez l'aventure Gourmet Guide</p>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                    <div class="about-card">
+                        <img src="Images/restaurant-interior1.jpg" class="img-fluid w-100" alt="Notre restaurant">
+                    </div>
+                </div>
+                <div class="col-lg-6 animate__animated animate__fadeInRight">
+                    <div class="ps-lg-5">
+                        <i class="fas fa-history section-icon"></i>
+                        <h2 class="mb-4">Notre parcours</h2>
+                        <p class="lead mb-4">Fondé en 2023, Gourmet Guide est né de la passion pour la cuisine et le partage. Ce qui a commencé comme un simple projet de gestion de recettes est rapidement devenu une plateforme incontournable pour les amateurs de gastronomie.</p>
+                        <p>Notre mission : rendre la cuisine accessible à tous tout en préservant l'authenticité des saveurs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <i class="fas fa-utensils section-icon"></i>
+                <h2 class="mb-3">Nos spécialités</h2>
+                <p class="lead">Découvrez nos créations signature</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                    <div class="about-card h-100">
+                        <img src="Images/chicken-1618459_1280.jpg" class="card-img-top" alt="Poulet frit">
+                        <div class="card-body">
+                            <h4>Poulet frit</h4>
+                            <p>Notre signature depuis 2023, un mélange parfait de fraîcheur et de croquant.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                    <div class="about-card h-100">
+                        <img src="Images/plaice-2796910_1280.jpg" class="card-img-top" alt="Plie Poisson">
+                        <div class="card-body">
+                            <h4>Plie Poisson</h4>
+                            <p>Une recette équilibrée qui marie parfaitement santé et gourmandise.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                    <div class="about-card h-100">
+                        <img src="Images/pasta-3805772_1280.jpg" class="card-img-top" alt="Pâtes Pisto">
+                        <div class="card-body">
+                            <h4>Pâtes Pisto</h4>
+                            <p>Une création exclusive de notre chef pâtissier, à découvrir absolument.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <i class="fas fa-users section-icon"></i>
+                <h2 class="mb-3">Notre équipe</h2>
+                <p class="lead">Rencontrez nos talents culinaires</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4 animate__animated animate__fadeIn">
+                    <div class="team-member">
+                        <img src="Images/équi2.jpg" class="team-img" alt="Jean Dupont">
+                        <h4>Jean Dupont</h4>
+                        <p class="text-muted">Chef cuisinier</p>
+                        <p>20 ans d'expérience dans les plus grandes maisons</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate__animated animate__fadeIn" data-wow-delay="0.2s">
+                    <div class="team-member">
+                        <img src="Images/équi.jpg" class="team-img" alt="Marie Lambert">
+                        <h4>Marie Lambert</h4>
+                        <p class="text-muted">Sous-chef</p>
+                        <p>Spécialiste des cuisines du monde</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate__animated animate__fadeIn" data-wow-delay="0.4s">
+                    <div class="team-member">
+                        <img src="Images/équi1.jpg" class="team-img" alt="Thomas Leroy">
+                        <h4>Thomas Leroy</h4>
+                        <p class="text-muted">Chef pâtissier</p>
+                        <p>Meilleur ouvrier de France 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="commitment-section p-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 animate__animated animate__fadeInLeft">
+                        <i class="fas fa-leaf section-icon"></i>
+                        <h2 class="mb-4">Notre engagement</h2>
+                        <p>Chez Gourmet Guide, nous nous engageons à :</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="fas fa-check-circle me-2"></i> Utiliser des produits locaux et de saison</li>
+                            <li class="mb-3"><i class="fas fa-check-circle me-2"></i> Promouvoir une cuisine responsable</li>
+                            <li class="mb-3"><i class="fas fa-check-circle me-2"></i> Partager notre savoir-faire avec transparence</li>
+                            <li><i class="fas fa-check-circle me-2"></i> Innovation constante dans le respect des traditions</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 animate__animated animate__fadeInRight">
+                        <div class="about-card">
+                            <img src="Images/restaurant-interior.jpg" class="img-fluid" alt="Notre engagement">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <i class="fas fa-map-marker-alt section-icon"></i>
+                <h2 class="mb-3">Où nous trouver</h2>
+                <p class="lead">Venez découvrir notre univers</p>
+            </div>
+            <div class="row justify-content-center animate__animated animate__fadeInUp">
+                <div class="col-lg-10">
+                    <div class="map-container">
+                        <iframe src="http://maps.google.com/maps?q=123%20Rue%20de%20la%20Gastronomie,%20Casablanca,%20Maroc&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <p class="text-center mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>123 Rue de la Gastronomie, Casablanca, Maroc</strong> - Ouvert du lundi au samedi de 11h à 23h
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer text-white py-5" style="background-color: var(--dark-color);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-utensils me-2"></i> Gourmet Guide</h5>
+                    <p>La référence gastronomique pour les passionnés de cuisine et les professionnels.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Liens rapides</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">Accueil</a></li>
+                        <li><a href="about.html" class="text-white">À propos</a></li>
+                        <li><a href="recipes.html" class="text-white">Recettes</a></li>
+                        <li><a href="contact.html" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i> +212 123 456 789</li>
+                        <li><i class="fas fa-envelope me-2"></i> contact@gourmetguide.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Rue de la Gastronomie, Casablanca</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">© 2023 Gourmet Guide. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Animation au scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    document.querySelector('.navbar').classList.add('scrolled');
+                } else {
+                    document.querySelector('.navbar').classList.remove('scrolled');
+                }
+            });
+
+            // GSAP animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animate sections on scroll
+            gsap.utils.toArray('.animate__animated').forEach(section => {
+                gsap.from(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+
+            // Team member hover effect
+            gsap.utils.toArray('.team-member').forEach(member => {
+                member.addEventListener('mouseenter', () => {
+                    gsap.to(member.querySelector('.team-img'), {
+                        scale: 1.05,
+                        duration: 0.3
+                    });
+                });
+                member.addEventListener('mouseleave', () => {
+                    gsap.to(member.querySelector('.team-img'), {
+                        scale: 1,
+                        duration: 0.3
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

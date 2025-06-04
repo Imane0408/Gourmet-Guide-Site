@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - Ajouter une recette</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background for the page */
+        }
+
+        .main-content .container {
+            background-color: #ffffff; /* White background for the form area */
+            padding: 40px;
+            border-radius: 15px; /* Rounded corners for the container */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            margin-top: 80px; /* Space from fixed header */
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #8D5B4C; /* Consistent heading color */
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .lead {
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select,
+        textarea.form-control {
+            border-radius: 8px; /* Rounded corners for inputs */
+            padding: 12px 15px; /* More padding */
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus,
+        textarea.form-control:focus {
+            border-color: #8D5B4C; /* Highlight on focus */
+            box-shadow: 0 0 0 0.25rem rgba(141, 91, 76, 0.25); /* Custom focus shadow */
+        }
+
+        textarea.form-control {
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        #image-preview {
+            border: 2px dashed #ccc; /* Dashed border for image preview */
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden; /* Ensure image doesn't break border-radius */
+        }
+
+        #image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px; /* Rounded corners for the image inside preview */
+        }
+
+        .recipe-preview-placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        .btn-primary {
+            background-color: #8D5B4C; /* Primary button color */
+            border-color: #8D5B4C;
+            padding: 12px 25px;
+            border-radius: 10px; /* Rounded buttons */
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #A67C70; /* Darker on hover */
+            border-color: #A67C70;
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Secondary button color */
+            border-color: #6c757d;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 15px; /* Space between buttons */
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header and Footer consistency */
+        header.navbar {
+            background-color: #8D5B4C !important; /* Ensure consistent header background */
+        }
+
+        footer.footer {
+            background-color: #8D5B4C !important; /* Ensure consistent footer background */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-content .container {
+                padding: 20px;
+                margin-top: 70px;
+            }
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                    <li class="nav-item" id="favorites-nav-item">
+                        <a class="nav-link" href="favorites.html">Favoris</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">À propos</a>
+                    </li>
+                    <li class="nav-item" id="menu-nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                    <li class="nav-item" id="reservations-nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    <li class="nav-item" id="profile-link">
+                        <a class="nav-link" href="profile.html">Profil</a>
+                    </li>
+                    <li class="nav-item" id="admin-dashboard-link">
+                        <a class="nav-link" href="admin_dashboard.html">Admin Dashboard</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light" id="logout-button" style="display: none;">Déconnexion</button>
+                    <button class="btn btn-outline-light ms-2" id="toggle-theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container mt-5 pt-5">
+            <h1 class="text-center">Ajouter une recette</h1>
+            <p class="lead text-center">Ajoutez une nouvelle recette à votre collection.</p>
+            <form id="recipe-form">
+                <div class="mb-3">
+                    <label for="recipe-name" class="form-label">Nom de la recette*</label>
+                    <input type="text" class="form-control" id="recipe-name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="recipe-time" class="form-label">Temps de préparation (minutes)*</label>
+                    <input type="number" class="form-control" id="recipe-time" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="recipe-difficulty" class="form-label">Difficulté*</label>
+                    <select class="form-select" id="recipe-difficulty" required>
+                        <option value="">Sélectionner...</option>
+                        <option value="Facile">Facile</option>
+                        <option value="Moyen">Moyen</option>
+                        <option value="Difficile">Difficile</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="recipe-category" class="form-label">Catégorie*</label>
+                    <select class="form-select" id="recipe-category" required>
+                        <option value="">Sélectionner...</option>
+                        <option value="Entrée">Entrée</option>
+                        <option value="Plat principal">Plat principal</option>
+                        <option value="Dessert">Dessert</option>
+                        <option value="Boisson">Boisson</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="recipe-image-upload" class="form-label">Image de la recette</label>
+                    <input type="file" class="form-control" id="recipe-image-upload" accept="image/*">
+                    <div id="image-preview" class="mt-2">
+                        <div class="recipe-preview-placeholder">Aucune image sélectionnée</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ingredients" class="form-label">Ingrédients*</label>
+                    <textarea class="form-control" id="ingredients" rows="5" required
+                              placeholder="Liste des ingrédients, séparés par des virgules (ex: 200g farine, 2 oeufs, 100ml lait)"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="steps" class="form-label">Étapes de préparation*</label>
+                    <textarea class="form-control" id="steps" rows="5" required
+                              placeholder="Étapes de préparation, une par ligne"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submit-button">Ajouter la recette</button>
+                <button type="button" class="btn btn-secondary" id="clear-form">Vider le formulaire</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+            let currentImage = null;
+            // Make currentImage globally accessible
+            window.currentImage = null;
+
+            // Handle image upload
+            document.getElementById('recipe-image-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Check file size (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        // Using a custom message box instead of alert()
+                        const messageBox = document.createElement('div');
+                        messageBox.className = 'alert alert-danger alert-dismissible fade show fixed-top mx-auto mt-3 text-center';
+                        messageBox.style.maxWidth = '400px';
+                        messageBox.style.zIndex = '1050';
+                        messageBox.setAttribute('role', 'alert');
+                        messageBox.innerHTML = `
+                            L'image est trop lourde (max 2MB)
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.body.appendChild(messageBox);
+                        setTimeout(() => messageBox.remove(), 5000); // Auto-dismiss after 5 seconds
+
+                        this.value = ''; // Clear the file input
+                        return;
+                    }
+
+                    const reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        window.currentImage = event.target.result;
+                        currentImage = event.target.result;
+                        document.getElementById('image-preview').innerHTML = `
+                            <img src="${currentImage}" alt="Aperçu" class="img-fluid rounded" style="max-height: 200px;">
+                        `;
+                    };
+
+                    reader.readAsDataURL(file);
+                } else {
+                    window.currentImage = null;
+                    currentImage = null;
+                    document.getElementById('image-preview').innerHTML =
+                        '<div class="recipe-preview-placeholder">Aucune image sélectionnée</div>';
+                }
+            });
+
+            if (editId) {
+                const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+                const recipeToEdit = recipes.find(recipe => recipe.id === parseInt(editId));
+
+                if (recipeToEdit) {
+                    document.getElementById('recipe-name').value = recipeToEdit.name;
+                    document.getElementById('recipe-time').value = recipeToEdit.time;
+                    document.getElementById('recipe-difficulty').value = recipeToEdit.difficulty;
+                    document.getElementById('recipe-category').value = recipeToEdit.category;
+                    document.getElementById('ingredients').value = recipeToEdit.ingredients;
+                    document.getElementById('steps').value = recipeToEdit.steps;
+                    currentImage = recipeToEdit.image || null;
+
+                    document.querySelector('h1').textContent = 'Modifier la recette';
+                    document.getElementById('submit-button').textContent = 'Mettre à jour';
+
+                    // Display image preview if it exists
+                    if (recipeToEdit.image) {
+                        if (recipeToEdit.image.startsWith('data:image')) {
+                            document.getElementById('image-preview').innerHTML =
+                                `<img src="${recipeToEdit.image}" alt="Aperçu" class="img-fluid rounded" style="max-height: 200px;">`;
+                        } else {
+                            document.getElementById('image-preview').innerHTML = `
+                                <img src="${recipeToEdit.image}" alt="Aperçu" class="img-fluid rounded" style="max-height: 200px;">
+                                <div class="mt-2 text-muted">Image externe - vous pouvez la remplacer</div>
+                            `;
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('clear-form').addEventListener('click', function() {
+                document.getElementById('recipe-form').reset();
+                document.getElementById('image-preview').innerHTML =
+                    '<div class="recipe-preview-placeholder">Aucune image sélectionnée</div>';
+                window.currentImage = null;
+                currentImage = null;
+                document.getElementById('recipe-image-upload').value = '';
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <footer class="footer text-white py-4 mt-5">
+        <div class="container text-center">
+            <p>© 2023 Gourmet Guide. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

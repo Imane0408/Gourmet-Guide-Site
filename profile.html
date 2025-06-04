@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - Profil</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #8D5B4C;">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                     <li class="nav-item" id="favorites-nav-item">
+                        <a class="nav-link" href="favorites.html">Favoris</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">À propos</a>
+                    </li>
+                    <li class="nav-item" id="menu-nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                    <li class="nav-item" id="reservations-nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    <li class="nav-item " id="profile-link">
+                        <a class="nav-link active" href="profile.html">Profil</a>
+                    </li>
+                     <li class="nav-item" id="inbox">
+                        <a class="nav-link" href="inbox.html">Messages</a>
+                    </li>
+                     <li class="nav-item" id="manage-users-link">
+                        <a class="nav-link" href="manage_users.html">Gestion d'utulisateurs</a>
+                    </li>
+                    <li class="nav-item" id="admin-dashboard-link">
+                        <a class="nav-link" href="admin_dashboard.html">Admin Dashboard</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light" id="logout-button" style="display: none;">Déconnexion</button>
+                    <button class="btn btn-outline-light ms-2" id="toggle-theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container mt-5 pt-5">
+            <h1 class="text-center">Mon Profil</h1>
+            <div id="profile-info" class="text-center">
+                </div>
+            <hr>
+            <!-- Section Réclamations supprimée -->
+        </div>
+    </main>
+
+    <footer class="footer text-white py-4 mt-5" style="background-color: #8D5B4C;">
+        <div class="container text-center">
+            <p>© 2023 Gourmet Guide. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script src="admin-navbar-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserComplaints();
+            // Écouteur pour les changements de stockage local (si une réclamation est ajoutée/répondue)
+            window.addEventListener('storage', function(event) {
+                if (event.key === 'complaints') {
+                    loadUserComplaints();
+                }
+            });
+        });
+
+        function loadUserComplaints() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            const complaintsTableBody = document.querySelector('#user-complaints-list tbody');
+            complaintsTableBody.innerHTML = ''; // Clear existing content
+
+            if (!loggedInUser) {
+                complaintsTableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Veuillez vous connecter pour voir vos réclamations.</td></tr>`;
+                return;
+            }
+
+            const allComplaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const userComplaints = allComplaints.filter(c => c.email === loggedInUser.username); // Assuming username is email for simplicity
+
+            if (userComplaints.length === 0) {
+                complaintsTableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Vous n'avez pas encore envoyé de réclamation.</td></tr>`;
+                return;
+            }
+
+            userComplaints.forEach(complaint => {
+                const row = `
+                    <tr>
+                        <td>${new Date(complaint.date).toLocaleDateString()}</td>
+                        <td>${complaint.subject || 'Sans sujet'}</td>
+                        <td>
+                            <span class="badge ${complaint.replied ? 'bg-success' : 'bg-warning'}">
+                                ${complaint.replied ? 'Traité' : 'En attente'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info view-complaint-details" data-id="${complaint.id}">
+                                <i class="fas fa-eye"></i> Voir Réponse
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                complaintsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            // Add event listeners for viewing complaint details
+            document.querySelectorAll('.view-complaint-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const complaintId = this.getAttribute('data-id');
+                    window.location.href = `complaint_response.html?id=${complaintId}`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

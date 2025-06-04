@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Guide - Boîte de réception</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .notification-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+        }
+        
+        .notification-item.unread {
+            background-color: #f8f9fa;
+            border-left-color: #8D5B4C;
+        }
+        
+        .notification-item:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .notification-type-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .notification-type-reservation {
+            background-color: #17a2b8;
+        }
+        
+        .notification-type-complaint {
+            background-color: #28a745;
+        }
+        
+        .notification-type-info {
+            background-color: #6c757d;
+        }
+        
+        .notification-actions {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .notification-item:hover .notification-actions {
+            opacity: 1;
+        }
+        
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+
+        .debug-panel.show {
+            display: block;
+        }
+
+        .debug-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #8D5B4C;">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils"></i> Gourmet Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recipes.html">Recettes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html">Favoris</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="inbox.html">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="menu.html">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservations.html">Réservations</a>
+                    </li>
+                    <li class="nav-item" id="profile-link">
+                        <a class="nav-link" href="profile.html">Profil</a>
+                    </li>
+                    <li class="nav-item" id="manage-users-link">
+                        <a class="nav-link" href="manage_users.html">Gestion d'utulisateurs</a>
+                    </li>
+                      <li class="nav-item" id="admin-dashboard-link">
+                        <a class="nav-link" href="admin_dashboard.html">Admin Dashboard</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="login.html" id="login-link">Connexion</a>
+                    <a class="btn btn-outline-light me-2" href="registre.html" id="register-link">Inscription</a>
+                    <button class="btn btn-outline-light" id="logout-button" style="display: none;">Déconnexion</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">
+                    <i class="fas fa-envelope me-2"></i>Ma Boîte de Réception
+                </h1>
+                <div>
+                    <button id="refresh-btn" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-sync-alt"></i> Actualiser
+                    </button>
+                    <button id="mark-all-read-btn" class="btn btn-outline-primary">
+                        <i class="fas fa-check-double me-1"></i> Tout marquer comme lu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtres -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="btn-group" role="group" aria-label="Filtres de notifications">
+                                <input type="radio" class="btn-check" name="filter" id="filter-all" value="all" checked>
+                                <label class="btn btn-outline-primary" for="filter-all">
+                                    <i class="fas fa-list me-1"></i> Tous
+                                </label>
+
+                                <input type="radio" class="btn-check" name="filter" id="filter-unread" value="unread">
+                                <label class="btn btn-outline-primary" for="filter-unread">
+                                    <i class="fas fa-envelope me-1"></i> Non lus
+                                </label>
+
+                                <input type="radio" class="btn-check" name="filter" id="filter-reservation" value="reservation">
+                                <label class="btn btn-outline-primary" for="filter-reservation">
+                                    <i class="fas fa-calendar me-1"></i> Réservations
+                                </label>
+
+                                <input type="radio" class="btn-check" name="filter" id="filter-complaint" value="complaint">
+                                <label class="btn btn-outline-primary" for="filter-complaint">
+                                    <i class="fas fa-comment me-1"></i> Réclamations
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <span id="notification-count" class="text-muted"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des notifications -->
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div id="notifications-container">
+                        <!-- Les notifications seront chargées ici -->
+                        <div class="p-4 text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Chargement...</span>
+                            </div>
+                            <p class="mt-2">Chargement des messages...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-envelope-open"></i>
+                        <h5>Aucun message</h5>
+                        <p>Votre boîte de réception est vide</p>
+                        <button class="btn btn-primary" onclick="createTestNotification()">
+                            <i class="fas fa-plus"></i> Créer une notification de test
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Panel de debug -->
+    <button class="btn btn-warning debug-toggle" onclick="toggleDebugPanel()">
+        <i class="fas fa-bug"></i> Debug
+    </button>
+
+    <div id="debug-panel" class="debug-panel">
+        <h6><i class="fas fa-bug me-2"></i>Panel de Debug</h6>
+        <div class="mb-2">
+            <button class="btn btn-sm btn-info me-2" onclick="debugNotifications()">
+                <i class="fas fa-search"></i> Analyser
+            </button>
+            <button class="btn btn-sm btn-success me-2" onclick="createTestNotification()">
+                <i class="fas fa-plus"></i> Test
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="clearAllNotifications()">
+                <i class="fas fa-trash"></i> Vider
+            </button>
+        </div>
+        <div id="debug-info" style="font-size: 0.8rem; max-height: 200px; overflow-y: auto;">
+            <em>Cliquez sur "Analyser" pour voir les informations de debug</em>
+        </div>
+    </div>
+
+    <!-- Modal pour afficher une notification -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Détails du message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <span id="notification-type-badge" class="badge notification-type-badge"></span>
+                        <small class="text-muted ms-2" id="notification-date"></small>
+                    </div>
+                    <div class="notification-content p-3 bg-light rounded">
+                        <p id="notification-message"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-white py-4 mt-5" style="background-color: #8D5B4C;">
+        <div class="container text-center">
+            <p>© 2023 Gourmet Guide. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="unified-notification-system.js"></script>
+    <script src="improved-navbar-update.js"></script>
+    <script src="app.js"></script>
+    <script src="admin-navbar-manager.js"></script>
+    
+    <script>
+        let currentFilter = 'all';
+        let isInitialized = false;
+        
+        // === FONCTIONS DE DEBUG INTÉGRÉES ===
+        function debugNotifications() {
+            console.log("=== DEBUG SYSTÈME DE NOTIFICATIONS ===");
+            
+            const debugInfo = document.getElementById('debug-info');
+            let html = '<strong>Analyse du système:</strong><br>';
+            
+            // 1. Vérifier les utilisateurs
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            html += `<br>👥 Utilisateurs: ${users.length}<br>`;
+            users.forEach(user => {
+                html += `&nbsp;&nbsp;- ${user.username} (${user.role})<br>`;
+            });
+            
+            // 2. Utilisateur connecté
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            html += `<br>🔐 Connecté: ${loggedInUser ? loggedInUser.username : 'Aucun'}<br>`;
+            
+            // 3. Notifications
+            const notifications = JSON.parse(localStorage.getItem("unifiedNotifications")) || [];
+            html += `<br>📧 Notifications totales: ${notifications.length}<br>`;
+            
+            if (loggedInUser) {
+                const userNotifications = notifications.filter(n => n.userId === loggedInUser.id);
+                const unreadCount = userNotifications.filter(n => !n.read).length;
+                html += `📬 Mes notifications: ${userNotifications.length} (${unreadCount} non lues)<br>`;
+                
+                userNotifications.forEach(notif => {
+                    html += `&nbsp;&nbsp;- ${notif.title} (${notif.read ? 'Lu' : 'Non lu'})<br>`;
+                });
+            }
+            
+            // 4. Système de notifications
+            html += `<br>⚙️ Système: ${window.unifiedNotificationSystem ? 'Actif' : 'Inactif'}<br>`;
+            
+            // 5. Réservations et réclamations
+            const reservations = JSON.parse(localStorage.getItem("reservations")) || [];
+            const complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+            html += `<br>📅 Réservations: ${reservations.length}<br>`;
+            html += `💬 Réclamations: ${complaints.length}<br>`;
+            
+            debugInfo.innerHTML = html;
+            
+            // Logs console
+            console.log("Utilisateurs:", users);
+            console.log("Utilisateur connecté:", loggedInUser);
+            console.log("Notifications:", notifications);
+            console.log("Système actif:", !!window.unifiedNotificationSystem);
+        }
+        
+        function createTestNotification() {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser) {
+                showToast("Aucun utilisateur connecté pour le test", "warning");
+                return;
+            }
+            
+            if (window.unifiedNotificationSystem) {
+                const testId = Date.now();
+                window.unifiedNotificationSystem.addNotification(
+                    loggedInUser.id,
+                    `Test de notification #${testId}`,
+                    `Ceci est un message de test créé le ${new Date().toLocaleString()}.\n\nCe message permet de vérifier que le système de notifications fonctionne correctement.`,
+                    "info"
+                );
+                showToast("Notification de test créée avec succès!", "success");
+                setTimeout(() => {
+                    loadNotifications();
+                    updateNotificationCount();
+                }, 500);
+            } else {
+                showToast("Système de notifications non disponible", "danger");
+            }
+        }
+        
+        function clearAllNotifications() {
+            if (confirm("Êtes-vous sûr de vouloir supprimer toutes les notifications ?")) {
+                localStorage.setItem("unifiedNotifications", JSON.stringify([]));
+                showToast("Toutes les notifications ont été supprimées", "info");
+                loadNotifications();
+                updateNotificationCount();
+            }
+        }
+        
+        function toggleDebugPanel() {
+            const panel = document.getElementById('debug-panel');
+            panel.classList.toggle('show');
+        }
+        
+        // === FONCTIONS PRINCIPALES ===
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("DOM chargé - Initialisation de la page inbox");
+            
+            // Vérifier l'authentification
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser) {
+                console.log("Utilisateur non connecté, redirection vers login");
+                window.location.href = "login.html";
+                return;
+            }
+            
+            console.log("Utilisateur connecté:", loggedInUser.username);
+            
+            // Attendre que le système de notifications soit initialisé
+            initializeInboxSystem();
+            
+            // Gestionnaires d'événements
+            setupEventListeners();
+            
+            // Écouter les nouvelles notifications
+            document.addEventListener("notificationAdded", function() {
+                console.log("Nouvelle notification détectée");
+                setTimeout(() => {
+                    loadNotifications();
+                    updateNotificationCount();
+                }, 300);
+            });
+            
+            document.addEventListener("notificationRead", function() {
+                console.log("Notification marquée comme lue");
+                updateNotificationCount();
+            });
+        });
+        
+        function initializeInboxSystem() {
+            let attempts = 0;
+            const maxAttempts = 10;
+            
+            function tryInitialize() {
+                attempts++;
+                console.log(`Tentative d'initialisation ${attempts}/${maxAttempts}`);
+                
+                if (window.unifiedNotificationSystem) {
+                    console.log("Système de notifications trouvé, chargement des messages");
+                    isInitialized = true;
+                    loadNotifications();
+                    updateNotificationCount();
+                } else if (attempts < maxAttempts) {
+                    console.log("Système de notifications non encore disponible, nouvelle tentative...");
+                    setTimeout(tryInitialize, 500);
+                } else {
+                    console.error("Impossible d'initialiser le système de notifications");
+                    showError("Erreur de chargement du système de notifications");
+                }
+            }
+            
+            tryInitialize();
+        }
+        
+        function setupEventListeners() {
+            // Bouton actualiser
+            const refreshBtn = document.getElementById("refresh-btn");
+            if (refreshBtn) {
+                refreshBtn.addEventListener("click", function() {
+                    console.log("Actualisation manuelle des messages");
+                    loadNotifications();
+                    updateNotificationCount();
+                    showToast("Messages actualisés", "success");
+                });
+            }
+            
+            // Bouton marquer tout comme lu
+            const markAllBtn = document.getElementById("mark-all-read-btn");
+            if (markAllBtn) {
+                markAllBtn.addEventListener("click", function() {
+                    markAllNotificationsAsRead();
+                });
+            }
+            
+            // Filtres
+            document.querySelectorAll('input[name="filter"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    currentFilter = this.value;
+                    console.log("Filtre changé:", currentFilter);
+                    loadNotifications();
+                    updateNotificationCount();
+                });
+            });
+        }
+        
+        function loadNotifications() {
+            const notificationsContainer = document.getElementById("notifications-container");
+            const emptyState = document.getElementById("empty-state");
+            
+            if (!notificationsContainer || !emptyState) {
+                console.error("Conteneurs de notifications non trouvés");
+                return;
+            }
+            
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser) {
+                console.log("Utilisateur non connecté");
+                window.location.href = "login.html";
+                return;
+            }
+            
+            // Vérifier que le système de notifications est disponible
+            if (!window.unifiedNotificationSystem) {
+                console.log("Système de notifications pas encore initialisé");
+                notificationsContainer.innerHTML = `
+                    <div class="p-4 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                        <p class="mt-2">Initialisation du système de notifications...</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let userNotifications = window.unifiedNotificationSystem.getUserNotifications(loggedInUser.id);
+            console.log("Notifications trouvées:", userNotifications.length);
+            
+            // Appliquer les filtres
+            userNotifications = filterNotifications(userNotifications);
+            console.log("Notifications après filtrage:", userNotifications.length);
+            
+            if (userNotifications.length === 0) {
+                notificationsContainer.innerHTML = "";
+                emptyState.style.display = "block";
+                console.log("Aucune notification à afficher");
+                return;
+            }
+            
+            emptyState.style.display = "none";
+            
+            // Trier par date (récents en premier)
+            userNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            notificationsContainer.innerHTML = userNotifications.map(notification => `
+                <div class="notification-item ${!notification.read ? 'unread' : ''}" data-notification-id="${notification.id}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-2">
+                                <h6 class="mb-0 ${!notification.read ? 'fw-bold' : ''}">
+                                    ${!notification.read ? '<i class="fas fa-circle text-primary me-2" style="font-size: 0.5rem;"></i>' : ''}
+                                    ${notification.title}
+                                </h6>
+                                <span class="badge notification-type-badge notification-type-${notification.type} ms-2">
+                                    ${getTypeLabel(notification.type)}
+                                </span>
+                            </div>
+                            <p class="mb-1">${notification.message.split('\n')[0]}</p>
+                            <small class="text-muted">${formatDate(notification.timestamp)}</small>
+                        </div>
+                        <div class="notification-actions ms-3">
+                            <button class="btn btn-sm btn-outline-primary view-notification-btn" data-notification-id="${notification.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${!notification.read ? `
+                                <button class="btn btn-sm btn-outline-success mark-read-btn ms-1" data-notification-id="${notification.id}">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+            
+            console.log("Notifications affichées avec succès");
+            
+            // Attacher les événements
+            attachNotificationEvents();
+        }
+        
+        function filterNotifications(notifications) {
+            switch(currentFilter) {
+                case 'unread':
+                    return notifications.filter(n => !n.read);
+                case 'reservation':
+                    return notifications.filter(n => n.type === 'reservation');
+                case 'complaint':
+                    return notifications.filter(n => n.type === 'complaint');
+                default:
+                    return notifications;
+            }
+        }
+        
+        function attachNotificationEvents() {
+            // Boutons voir détails
+            document.querySelectorAll(".view-notification-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const notificationId = parseInt(this.getAttribute("data-notification-id"));
+                    viewNotification(notificationId);
+                });
+            });
+            
+            // Boutons marquer comme lu
+            document.querySelectorAll(".mark-read-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const notificationId = parseInt(this.getAttribute("data-notification-id"));
+                    markNotificationAsRead(notificationId);
+                });
+            });
+        }
+        
+        function viewNotification(notificationId) {
+            if (!window.unifiedNotificationSystem) return;
+            
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            const notifications = window.unifiedNotificationSystem.getUserNotifications(loggedInUser.id);
+            const notification = notifications.find(n => n.id === notificationId);
+            
+            if (!notification) return;
+            
+            // Marquer comme lu si pas encore lu
+            if (!notification.read) {
+                window.unifiedNotificationSystem.markAsRead(notificationId);
+                
+                // Mettre à jour l'interface
+                const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
+                if (notificationElement) {
+                    notificationElement.classList.remove("unread");
+                    const titleElement = notificationElement.querySelector("h6");
+                    if (titleElement) {
+                        titleElement.classList.remove("fw-bold");
+                        const unreadIcon = titleElement.querySelector("i");
+                        if (unreadIcon) unreadIcon.remove();
+                    }
+                    
+                    // Supprimer le bouton "marquer comme lu"
+                    const markReadBtn = notificationElement.querySelector(".mark-read-btn");
+                    if (markReadBtn) markReadBtn.remove();
+                }
+                
+                updateNotificationCount();
+            }
+            
+            // Afficher le modal
+            document.getElementById("notificationModalLabel").textContent = notification.title;
+            document.getElementById("notification-date").textContent = formatDate(notification.timestamp);
+            document.getElementById("notification-message").innerHTML = notification.message.replace(/\n/g, '<br>');
+            
+            const typeBadge = document.getElementById("notification-type-badge");
+            typeBadge.textContent = getTypeLabel(notification.type);
+            typeBadge.className = `badge notification-type-badge notification-type-${notification.type}`;
+            
+            const modal = new bootstrap.Modal(document.getElementById("notificationModal"));
+            modal.show();
+        }
+        
+        function markNotificationAsRead(notificationId) {
+            if (!window.unifiedNotificationSystem) return;
+            
+            window.unifiedNotificationSystem.markAsRead(notificationId);
+            
+            // Mettre à jour l'interface
+            const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
+            if (notificationElement) {
+                notificationElement.classList.remove("unread");
+                const titleElement = notificationElement.querySelector("h6");
+                if (titleElement) {
+                    titleElement.classList.remove("fw-bold");
+                    const unreadIcon = titleElement.querySelector("i");
+                    if (unreadIcon) unreadIcon.remove();
+                }
+                
+                // Supprimer le bouton "marquer comme lu"
+                const markReadBtn = notificationElement.querySelector(".mark-read-btn");
+                if (markReadBtn) markReadBtn.remove();
+            }
+            
+            updateNotificationCount();
+            showToast("Message marqué comme lu", "success");
+        }
+        
+        function markAllNotificationsAsRead() {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser || !window.unifiedNotificationSystem) return;
+            
+            const updated = window.unifiedNotificationSystem.markAllAsRead(loggedInUser.id);
+            
+            if (updated) {
+                loadNotifications();
+                updateNotificationCount();
+                showToast("Tous les messages ont été marqués comme lus", "success");
+            } else {
+                showToast("Aucun message non lu", "info");
+            }
+        }
+        
+        function updateNotificationCount() {
+            const countElement = document.getElementById("notification-count");
+            if (!countElement || !window.unifiedNotificationSystem) return;
+            
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!loggedInUser) return;
+            
+            const userNotifications = window.unifiedNotificationSystem.getUserNotifications(loggedInUser.id);
+            const filteredNotifications = filterNotifications(userNotifications);
+            const unreadCount = userNotifications.filter(n => !n.read).length;
+            
+            let countText = `${filteredNotifications.length} message(s)`;
+            if (unreadCount > 0) {
+                countText += ` (${unreadCount} non lu(s))`;
+            }
+            
+            countElement.textContent = countText;
+        }
+        
+        function getTypeLabel(type) {
+            switch(type) {
+                case 'reservation':
+                    return 'Réservation';
+                case 'complaint':
+                    return 'Réclamation';
+                default:
+                    return 'Info';
+            }
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString("fr-FR") + " à " + 
+                   date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        }
+        
+        function showToast(message, type = "success") {
+            const toast = document.createElement("div");
+            toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            toast.style.top = "20px";
+            toast.style.right = "20px";
+            toast.style.zIndex = "1100";
+            toast.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
+        }
+        
+        function showError(message) {
+            const notificationsContainer = document.getElementById("notifications-container");
+            if (notificationsContainer) {
+                notificationsContainer.innerHTML = `
+                    <div class="p-4 text-center">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                        <h5>Erreur de chargement</h5>
+                        <p>${message}</p>
+                        <button class="btn btn-primary" onclick="location.reload()">Recharger la page</button>
+                        <button class="btn btn-info ms-2" onclick="debugNotifications()">Diagnostiquer</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Exposer les fonctions globalement pour les tests
+        window.debugNotifications = debugNotifications;
+        window.createTestNotification = createTestNotification;
+        window.clearAllNotifications = clearAllNotifications;
+    </script>
+</body>
+</html>
